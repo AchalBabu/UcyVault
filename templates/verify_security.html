@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Answer Security Question</h2>
+<p><strong>Q:</strong> {{ question }}</p>
+<form method="POST">
+  <input type="text" name="security_answer" placeholder="Your answer" required><br><br>
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Login to UcyVault</h2>
+<form method="POST">
+  <input type="text" name="username" placeholder="Username" required>
+  <input type="password" name="password" placeholder="Master Password" required>
+  <button type="submit">Login</button>
+</form>
+
+<div style="margin-top: 10px;">
+    <a href="{{ url_for('auth.forgot_password') }}" style="color: #a78bfa;">Forgot password?</a>
+</div>
+
+<p>New here? <a href="{{ url_for('auth.register') }}">Register</a></p>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Secure Notes Vault</h2>
+<input type="text" id="noteSearch" placeholder="Search notes..." onkeyup="searchNotes()" style="margin: 10px 0; padding: 5px;">
+
+
+<form method="POST">
+  <input type="text" name="title" placeholder="Note Title" required>
+  <textarea name="content" placeholder="Write your secret note..." required></textarea>
+  <button type="submit">Save Note</button>
+</form>
+
+<h3>My Encrypted Notes</h3>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Note</th>
+    <th>Created At</th>
+    <th>Action</th>
+  </tr>
+  {% for note in notes %}
+  <tr>
+    <td>{{ note.title }}</td>
+    <td>
+      <div class="note-preview">
+        {{ note.content[:80] }}{% if note.content|length > 80 %}...{% endif %}
+      </div>
+      <div class="note-full" style="display: none;">
+        {{ note.content }}
+      </div>
+    </td>
+    <td>{{ note.created_at }}</td>
+    <td>
+      <button type="button" onclick="toggleNote(this)">View</button>
+      <form method="POST" action="/delete-note/{{ note.id }}" style="display:inline;">
+        <button type="submit">🗑️</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<script>
+function toggleNote(button) {
+  const row = button.closest('tr');
+  const preview = row.querySelector('.note-preview');
+  const full = row.querySelector('.note-full');
+
+  if (full.style.display === 'none') {
+    full.style.display = 'block';
+    preview.style.display = 'none';
+    button.textContent = 'Hide';
+  } else {
+    full.style.display = 'none';
+    preview.style.display = 'block';
+    button.textContent = 'View';
+  }
+}
+</script>
+
+<style>
+.note-preview {
+  max-height: 3em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: monospace;
+}
+.note-full {
+  white-space: pre-wrap;
+  font-family: monospace;
+  margin-top: 5px;
+}
+</style>
+<script>
+function searchNotes() {
+  let input = document.getElementById('noteSearch').value.toLowerCase();
+  let rows = document.querySelectorAll("table tr:not(:first-child)");
+
+  rows.forEach(row => {
+    let text = row.innerText.toLowerCase();
+    row.style.display = text.includes(input) ? "" : "none";
+  });
+}
+</script>
+
+{% endblock %}

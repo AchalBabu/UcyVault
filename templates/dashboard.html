@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>UcyVault Dashboard</h2>
+<p>Choose a section to manage:</p>
+
+<ul>
+  <li><a href="{{ url_for('passwords.password_vault') }}">🔐 Password Vault</a></li>
+  <li><a href="{{ url_for('files.file_vault') }}">📁 Encrypted Files</a></li>
+  <li><a href="{{ url_for('notes.notes_vault') }}">📝 Secure Notes</a></li>
+</ul>
+<hr>
+<h3>Account Settings</h3>
+
+<!-- 🟢 Logout button -->
+<form method="GET" action="{{ url_for('auth.logout') }}">
+  <button type="submit" class="btn btn-warning">Logout</button>
+</form>
+
+<h3 style="margin-top: 30px;">Delete Account permanently?</h3>
+<form method="POST" action="{{ url_for('auth.delete_account') }}" onsubmit="return confirm('Are you absolutely sure you want to delete your account permanently?');">
+    <button type="submit" class="btn btn-danger">Delete My Account</button>
+</form>
+
+
+
+
+{% endblock %}
