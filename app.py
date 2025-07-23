@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session, redirect, url_for
 from extensions import mysql, mail
 from config import (
-    MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB, SECRET_KEY,
+    MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB, SECRET_KEY,
     MAIL_SERVER, MAIL_PORT, MAIL_USE_TLS, MAIL_USERNAME, MAIL_PASSWORD
 )
 from auth import auth_bp, init_auth
@@ -16,6 +16,9 @@ app.config['MYSQL_HOST'] = MYSQL_HOST
 app.config['MYSQL_USER'] = MYSQL_USER
 app.config['MYSQL_PASSWORD'] = MYSQL_PASSWORD
 app.config['MYSQL_DB'] = MYSQL_DB
+# Add this after MYSQL_DB
+app.config['MYSQL_PORT'] = MYSQL_PORT
+
 
 # --- Secret Key for Session ---
 app.secret_key = SECRET_KEY

@@ -1,17 +1,20 @@
 # config.py
-MYSQL_HOST = 'localhost'
+
+# --- Railway MySQL Configuration ---
+MYSQL_HOST = 'maglev.proxy.rlwy.net'
+MYSQL_PORT = 23506
 MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'Ucy@123456'
-MYSQL_DB = 'ucysec_locker'
+MYSQL_PASSWORD = 'GhilEnwvMZgEqvndhxPkVClJVhzTzpvh'
+MYSQL_DB = 'railway'
+
+# --- Secret Key for Sessions ---
 SECRET_KEY = 'ucysec_super_secret_key'
 SESSION_PERMANENT = False
 SESSION_TYPE = "filesystem"
-# config.py
 
+# --- Mail Configuration ---
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 587
 MAIL_USE_TLS = True
-MAIL_USERNAME = 'theachal123@gmail.com'  # Your sender email
-MAIL_PASSWORD = 'fvfp irqz pcdx cipm'  # 16-digit app password
-
-
+MAIL_USERNAME = 'theachal123@gmail.com'
+MAIL_PASSWORD = 'fvfp irqz pcdx cipm'  # Gmail App Password
