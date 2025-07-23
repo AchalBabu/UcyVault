@@ -1,4 +1,5 @@
 # config.py
+import os
 
 # --- Railway MySQL Configuration ---
 MYSQL_HOST = 'maglev.proxy.rlwy.net'
@@ -18,3 +19,11 @@ MAIL_PORT = 587
 MAIL_USE_TLS = True
 MAIL_USERNAME = 'theachal123@gmail.com'
 MAIL_PASSWORD = 'fvfp irqz pcdx cipm'  # Gmail App Password
+
+
+
+if os.environ.get('RENDER'):
+    UPLOAD_FOLDER = '/tmp'  # ✅ Render pe safe
+else:
+    UPLOAD_FOLDER = 'uploads'  # ✅ Localhost pe safe
+

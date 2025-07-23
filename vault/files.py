@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, session, send_file, flash, url_for
+from flask import Blueprint, request, render_template, redirect, session, send_file, flash, url_for, current_app
 import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
@@ -9,7 +9,9 @@ from Crypto.Cipher import AES
 import MySQLdb.cursors
 
 files_bp = Blueprint('files', __name__)
-UPLOAD_FOLDER = 'encrypted_data/files/'
+
+# 🛠 Dynamic upload folder (Render vs Local)
+UPLOAD_FOLDER = '/tmp' if os.environ.get('RENDER') else 'encrypted_data/files/'
 
 @files_bp.route('/files', methods=['GET', 'POST'])
 def file_vault():
@@ -31,8 +33,12 @@ def file_vault():
             encrypted_filename = f"{session['user_id']}_{datetime.now().timestamp()}_{filename}.enc"
             path = os.path.join(UPLOAD_FOLDER, encrypted_filename)
 
-            with open(path, 'wb') as f:
-                f.write(encrypted_data)
+            try:
+                with open(path, 'wb') as f:
+                    f.write(encrypted_data)
+            except Exception as e:
+                flash(f"File upload failed: {str(e)}", "danger")
+                return redirect(url_for('files.file_vault'))
 
             cur = mysql.connection.cursor()
             cur.execute(
@@ -45,7 +51,6 @@ def file_vault():
             flash('File uploaded and encrypted!', 'success')
             return redirect(url_for('files.file_vault'))
 
-    # ✅ Use DictCursor to access keys in template
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM files WHERE user_id = %s", (session['user_id'],))
     files = cur.fetchall()
@@ -84,7 +89,7 @@ def download_file(file_id):
         flash("Decryption failed. Possibly wrong key.", "danger")
         return redirect(url_for('files.file_vault'))
 
-    temp_path = f"temp_{file['original_name']}"
+    temp_path = os.path.join(UPLOAD_FOLDER, f"temp_{file['original_name']}")
     with open(temp_path, 'wb') as f:
         f.write(decrypted)
 

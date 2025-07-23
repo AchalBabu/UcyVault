@@ -29,6 +29,10 @@ app.config['MAIL_PORT'] = MAIL_PORT
 app.config['MAIL_USE_TLS'] = MAIL_USE_TLS
 app.config['MAIL_USERNAME'] = MAIL_USERNAME
 app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
+from config import UPLOAD_FOLDER
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 # --- Initialize Extensions ---
 mysql.init_app(app)
